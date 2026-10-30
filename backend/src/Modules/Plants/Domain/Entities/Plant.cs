@@ -8,6 +8,7 @@ public class Plant
     public string Description { get; private set; }
     public decimal Price { get; private set; }
     public DateTime CreatedAt { get; private set; }
+    public int Stock { get; private set; }
 
     public Plant( string name, string scientificName, string description, decimal price)
     {
@@ -17,5 +18,6 @@ public class Plant
         Description = description;
         Price = price;
         CreatedAt = DateTime.UtcNow;
+        Stock = 0;
     }
 }

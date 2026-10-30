@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: plantarium-db
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: plantarium
+      POSTGRES_USER: plantarium
+      POSTGRES_PASSWORD: plantarium123
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - plantarium_data:/var/lib/postgresql/data
+
+volumes:
+  plantarium_data:

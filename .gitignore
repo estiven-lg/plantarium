@@ -1,0 +1,72 @@
+# ==========================================
+# .NET / C#
+# ==========================================
+
+# Archivos generados por compilación
+[Bb]in/
+[Oo]bj/
+
+# Archivos de Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# Archivos temporales
+[Tt]emp/
+[Tt]mp/
+
+# Publicaciones generadas
+publish/
+artifacts/
+
+# ==========================================
+# Angular / Node.js
+# ==========================================
+
+node_modules/
+dist/
+.angular/
+.cache/
+
+# Archivos de entorno locales
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# IDEs y editores
+# ==========================================
+
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# ==========================================
+# Sistema operativo
+# ==========================================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==========================================
+# Cobertura de pruebas
+# ==========================================
+
+coverage/
+TestResults/
+
+# ==========================================
+# Docker / datos locales
+# ==========================================
+
+# No ignorar Dockerfile ni docker-compose.yml.
+# Ignorar únicamente datos persistentes locales:
+docker-data/
+postgres-data/

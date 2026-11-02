@@ -6,9 +6,9 @@ public class Plant
     public string Name { get; private set; }
     public string ScientificName { get; private set; }
     public string Description { get; private set; }
-    public decimal Price { get; private set; }
+    public decimal Price { get;  set; }
     public DateTime CreatedAt { get; private set; }
-    public int Stock { get; private set; }
+    public int Stock { get;  set; }
 
     public Plant( string name, string scientificName, string description, decimal price)
     {

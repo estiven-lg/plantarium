@@ -3,6 +3,9 @@
     <Project Path="src/Plantarium.Api/Plantarium.Api.csproj" />
   </Folder>
   <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Fruits/">
+    <Project Path="src/Modules/Fruits/Plantarium.Modules.Fruits.csproj" />
+  </Folder>
   <Folder Name="/src/Modules/Plants/">
     <Project Path="src/Modules/Plants/Plantarium.Modules.Plants.csproj" />
   </Folder>

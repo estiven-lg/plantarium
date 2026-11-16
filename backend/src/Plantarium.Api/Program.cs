@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Plantarium.Modules.Plants.Extensions;
 using Plantarium.Modules.Fruits.Extensions;
+using Plantarium.Modules.Seeds.Extensions;
 using Plantarium.Modules.Plants.Infrastructure.Persistence;
 using Plantarium.Modules.Fruits.Infrastructure.Persistence;
+using Plantarium.Modules.Seeds.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +24,13 @@ builder.Services.AddDbContext<PlantDbContext>(options =>
 builder.Services.AddDbContext<FruitDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+builder.Services.AddDbContext<SeedDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
 // Application Services
 builder.Services.AddPlantsModule();
 builder.Services.AddFruitsModule();
+builder.Services.AddSeedsModule();
 
 var app = builder.Build();
 

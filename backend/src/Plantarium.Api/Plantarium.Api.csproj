@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Modules\Plants\Plantarium.Modules.Plants.csproj" />
     <ProjectReference Include="..\Modules\Fruits\Plantarium.Modules.Fruits.csproj" />
+    <ProjectReference Include="..\Modules\Seeds\Plantarium.Modules.Seeds.csproj" />
   </ItemGroup>
 
 </Project>

@@ -9,4 +9,7 @@
   <Folder Name="/src/Modules/Plants/">
     <Project Path="src/Modules/Plants/Plantarium.Modules.Plants.csproj" />
   </Folder>
+  <Folder Name="/src/Modules/Seeds/">
+    <Project Path="src/Modules/Seeds/Plantarium.Modules.Seeds.csproj" />
+  </Folder>
 </Solution>

@@ -70,3 +70,4 @@ TestResults/
 # Ignorar únicamente datos persistentes locales:
 docker-data/
 postgres-data/
+.fake

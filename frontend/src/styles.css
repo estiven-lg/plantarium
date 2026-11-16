@@ -1,3 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
 
-@import 'tailwindcss';
+/* 1. Modo Claro (Por defecto) */
+:root {
+  /* Verdes principales (buen contraste con texto blanco) */
+  --color-primary: #416100;         /* Verde oliva profundo */
+  --color-primary-dark: #173803;    /* Verde bosque muy oscuro (hover/bordes) */
+  
+  /* Acentos lima */
+  --color-secondary: #709a08;       /* Verde hoja vibrante */
+  --color-secondary-dark: #416100;  /* Hover del secundario */
+  --color-accent: #83c702;          /* Lima brillante para badges o highlights */
+  --color-accent-light: #bce000;    /* Lima neón suave para fondos sutiles */
+
+  /* Superficies y texto con un matiz orgánico sutil */
+  --color-background: #f7f9f4;      /* Blanco roto con toque botánico */
+  --color-surface: #ffffff;         /* Tarjetas blancas */
+  --color-text: #173803;            /* Usamos tu verde más oscuro para el texto */
+}
+
+/* 2. Modo Oscuro */
+.dark {
+  /* En oscuro invertimos el brillo: los tonos lima resaltan sin cansar la vista */
+  --color-primary: #83c702;         /* Lima vibrante */
+  --color-primary-dark: #709a08;    /* Hover más asentado */
+  
+  --color-secondary: #bce000;       /* Lima claro para llamados a la acción */
+  --color-secondary-dark: #83c702;
+  --color-accent: #709a08;
+  --color-accent-light: #416100;
+
+  /* Superficies oscuras armonizadas con #173803 */
+  --color-background: #0d1f02;      /* Base derivada de tu #173803 */
+  --color-surface: #173803;         /* Tu verde más oscuro como fondo de tarjetas */
+  --color-text: #f3f7ec;            /* Texto claro legible */
+}
+
+/* 3. Registro de tokens en Tailwind */
+/* Tailwind CSS v4 directive; suppress generic CSS lint warnings. */
+/* stylelint-disable-next-line at-rule-no-unknown */
+@theme {
+  --color-primary: var(--color-primary);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-secondary: var(--color-secondary);
+  --color-secondary-dark: var(--color-secondary-dark);
+  --color-accent: var(--color-accent);
+  --color-accent-light: var(--color-accent-light);
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-text: var(--color-text);
+}

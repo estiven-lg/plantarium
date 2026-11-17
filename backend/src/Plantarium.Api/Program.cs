@@ -8,6 +8,17 @@ using Plantarium.Modules.Seeds.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("allowDev", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // Services
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
@@ -40,6 +51,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors("allowDev");
 }
 
 app.UseHttpsRedirection();

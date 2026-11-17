@@ -14,14 +14,14 @@ public class SeedsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<IEnumerable<SeedResponseDto>>> GetAll(CancellationToken cancellationToken)
     {
         var seeds = await _seedService.GetAllAsync(cancellationToken);
         return Ok(seeds);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<SeedResponseDto>> GetById(Guid id, CancellationToken cancellationToken)
     {
         var seed = await _seedService.GetByIdAsync(id, cancellationToken);
         if (seed is null)
@@ -33,14 +33,14 @@ public class SeedsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateSeedDto dto, CancellationToken cancellationToken)
+    public async Task<ActionResult<SeedResponseDto>> Create(CreateSeedDto dto, CancellationToken cancellationToken)
     {
         var seed = await _seedService.CreateAsync(dto, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = seed.Id }, seed);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, UpdateSeedDto dto, CancellationToken cancellationToken)
+    public async Task<ActionResult<SeedResponseDto>> Update(Guid id, UpdateSeedDto dto, CancellationToken cancellationToken)
     {
         var updated = await _seedService.UpdateAsync(id, dto, cancellationToken);
         if (!updated)

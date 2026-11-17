@@ -13,14 +13,16 @@ public class FruitsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    [Produces("application/json")]
+    public async Task<ActionResult<IEnumerable<FruitResponseDto>>> GetAll()
     {
         var fruits = await _fruitService.GetAllAsync();
         return Ok(fruits);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(Guid id)
+    [Produces("application/json")]
+    public async Task<ActionResult<FruitResponseDto>> GetById(Guid id)
     {
         var fruit = await _fruitService.GetByIdAsync(id);
         if (fruit is null)
@@ -31,14 +33,16 @@ public class FruitsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateFruitDto dto)
+    [Produces("application/json")]
+    public async Task<ActionResult<FruitResponseDto>> Create(CreateFruitDto dto)
     {
         var fruit = await _fruitService.CreateAsync(dto);
         return CreatedAtAction(nameof(GetById), new { id = fruit.Id }, fruit);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, UpdateFruitDto dto)
+    [Produces("application/json")]
+    public async Task<ActionResult<FruitResponseDto>> Update(Guid id, UpdateFruitDto dto)
     {
         var updatedFruit = await _fruitService.UpdateAsync(id, dto);
         if (updatedFruit is null)
@@ -50,6 +54,7 @@ public class FruitsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Produces("application/json")]
     public async Task<IActionResult> Delete(Guid id)
     {
         try

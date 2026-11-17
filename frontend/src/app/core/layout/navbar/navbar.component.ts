@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { Droplets, LucideAngularModule, Plus, Sprout, Sun } from 'lucide-angular';
-import { ThemeService } from '../../theme/theme';
-import { ThemeToggle } from '../../../shared/components/theme-toggle/theme-toggle';
+import { LucideAngularModule, Plus, Sprout, Sun } from 'lucide-angular';
+import { ThemeToggle } from '@shared/components/theme-toggle/theme-toggle';
 
 @Component({
   selector: 'app-navbar',

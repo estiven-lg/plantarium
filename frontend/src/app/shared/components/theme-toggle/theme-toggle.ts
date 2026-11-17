@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ThemeService } from '../../../core/theme/theme';
+import { ThemeService } from '@core/theme/theme';
 import { LucideAngularModule, Moon, Sun } from 'lucide-angular';
 import { NgClass } from '@angular/common';
 

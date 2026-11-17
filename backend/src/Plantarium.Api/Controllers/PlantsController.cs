@@ -12,14 +12,14 @@ public class PlantsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<ActionResult<IEnumerable<PlantResponseDto>>> GetAll()
     {
         var plants = await _plantService.GetAllAsync();
         return Ok(plants);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(Guid id)
+    public async Task<ActionResult<PlantResponseDto>> GetById(Guid id)
     {
         var plant = await _plantService.GetByIdAsync(id);
         if (plant is null)
@@ -30,14 +30,14 @@ public class PlantsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreatePlantDto dto)
+    public async Task<ActionResult<PlantResponseDto>> Create(CreatePlantDto dto)
     {
         var plant = await _plantService.CreateAsync(dto);
         return CreatedAtAction(nameof(GetById), new { id = plant.Id }, plant);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, UpdatePlantDto dto)
+    public async Task<ActionResult<PlantResponseDto>> Update(Guid id, UpdatePlantDto dto)
     {
         var updatedPlant = await _plantService.UpdateAsync(id, dto);
         if (updatedPlant is null)

@@ -5,10 +5,12 @@
   /* Verdes principales (buen contraste con texto blanco) */
   --color-primary: #416100;         /* Verde oliva profundo */
   --color-primary-dark: #173803;    /* Verde bosque muy oscuro (hover/bordes) */
+  --color-primary-light: #709a08;   /* Verde hoja vibrante para acentos y botones */
   
   /* Acentos lima */
   --color-secondary: #709a08;       /* Verde hoja vibrante */
   --color-secondary-dark: #416100;  /* Hover del secundario */
+  --color-secondary-light: #bce000;    /* Verde lima suave para fondos y hover */
   --color-accent: #83c702;          /* Lima brillante para badges o highlights */
   --color-accent-light: #bce000;    /* Lima neón suave para fondos sutiles */
 
@@ -40,8 +42,11 @@
 /* stylelint-disable-next-line at-rule-no-unknown */
 @theme {
   --color-primary: var(--color-primary);
+  --color-primary-light: var(--color-primary-light);
   --color-primary-dark: var(--color-primary-dark);
+
   --color-secondary: var(--color-secondary);
+  --color-secondary-light: var(--color-secondary-light);
   --color-secondary-dark: var(--color-secondary-dark);
   --color-accent: var(--color-accent);
   --color-accent-light: var(--color-accent-light);

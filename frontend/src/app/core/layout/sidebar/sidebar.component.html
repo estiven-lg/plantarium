@@ -1,16 +1,28 @@
-<aside class="w-64  border-r border-primary/10 flex flex-col shrink-0 h-full">
+<aside class="w-64 border-r border-primary/10 flex flex-col shrink-0 h-full">
   <nav class="p-4 flex-1 space-y-1.5">
-    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium transition">
+    <a
+      routerLink="/fruits"
+      routerLinkActive="bg-primary/10"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-primary hover:bg-background transition font-medium"
+    >
       <lucide-icon [img]="fruitsIcon" class="w-5 h-5 text-primary"></lucide-icon>
-      <span>Semillas</span>
-    </a>
-    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-primary hover:bg-background transition font-medium">
-      <lucide-icon [img]="seedsIcon" class="w-5 h-5 text-primary"></lucide-icon>
       <span>Frutas</span>
     </a>
-    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-primary hover:bg-background transition font-medium">
+    <a
+      routerLink="/seeds"
+      routerLinkActive="bg-primary/10"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium transition"
+    >
+      <lucide-icon [img]="seedsIcon" class="w-5 h-5 text-primary"></lucide-icon>
+      <span>Semillas</span>
+    </a>
+    <a
+      routerLink="/plants"
+      routerLinkActive="bg-primary/10"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-primary hover:bg-background transition font-medium"
+    >
       <lucide-icon [img]="plantsIcon" class="w-5 h-5 text-primary"></lucide-icon>
-      <span>Reportes</span>
+      <span>Plantas</span>
     </a>
   </nav>
 

@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { LucideAngularModule, Plus, Sprout, Sun } from 'lucide-angular';
+import { Component } from '@angular/core';
+import { LucideAngularModule, Sun } from 'lucide-angular';
 import { ThemeToggle } from '@shared/components/theme-toggle/theme-toggle';
 
 @Component({

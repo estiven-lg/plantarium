@@ -1,1 +1,30 @@
-<p>seed-list works!</p>
+<section class="space-y-6">
+  <app-seed-list-header />
+  <!-- Estado de carga -->
+  @if (isLoading()) {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- Generamos 6 tarjetas skeleton mientras responde la API -->
+    @for (item of [1, 2, 3, 4, 5, 6]; track item) {
+        <app-seed-card-skeleton />
+    }
+  </div>
+  } @else if (errorMessage()) {
+    <!-- Estado de error -->
+    <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-500">
+      {{ errorMessage() }}
+    </div>
+  } @else {
+    <!-- Listado exitoso -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (seed of seeds(); track seed.id) {
+        <app-seed-card [seed]="seed" />
+      } @empty {
+        <div
+          class="col-span-full p-8 text-center bg-surface rounded-xl border border-dashed border-primary/30"
+        >
+          <p class="opacity-75">Aún no tienes semillas registradas.</p>
+        </div>
+      }
+    </div>
+  }
+</section>

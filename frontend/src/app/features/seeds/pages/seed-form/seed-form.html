@@ -1,0 +1,101 @@
+@if (isLoading()) {
+  <app-seed-form-skeleton />
+} @else {
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    class="w-full h-full flex flex-col space-y-5 bg-surface p-6 rounded-xl border border-primary/20"
+  >
+    <div class="flex items-center justify-between gap-3">
+      <a
+        routerLink="/seeds"
+        aria-label="Regresar al menú principal"
+        class="p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
+      >
+        <lucide-icon [img]="arrowLeftIcon" class="w-5 h-5"></lucide-icon>
+      </a>
+      <div class="flex items-center gap-2">
+        <h2 class="text-xl font-bold text-primary">
+          {{ id() === 'new' ? 'Nueva Semilla' : 'Editar Semilla' }}
+        </h2>
+        <lucide-icon [img]="seedIcon" class="w-6 h-6 text-primary/50" />
+      </div>
+    </div>
+
+    <!-- name -->
+    <div class="space-y-1">
+      <label for="name" class="block text-sm font-medium">Nombre *</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder="Ej. Semillas de Girasol"
+        class="w-full px-3 py-2 rounded-lg bg-background border border-primary/30 focus:outline-none focus:border-primary"
+      />
+
+      <!-- Mensajes de validación reactivos -->
+      @if (form.controls.name.invalid && form.controls.name.touched) {
+        <p class="text-xs text-red-500">
+          @if (form.controls.name.hasError('required')) {
+            El nombre es obligatorio.
+          } @else if (form.controls.name.hasError('minlength')) {
+            Debe tener al menos 3 caracteres.
+          }
+        </p>
+      }
+    </div>
+
+    <!-- description -->
+    <div class="space-y-1">
+      <label for="description" class="block text-sm font-medium">Descripción</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        placeholder="Ej. Semillas orgánicas ideales para germinación rápida."
+        class="w-full px-3 py-2 rounded-lg bg-background border border-primary/30 focus:outline-none focus:border-primary line-clamp-5"
+      ></textarea>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="flex justify-between items-center gap-3 pt-4 mt-auto">
+      @if (id() !== 'new') {
+        <button
+          type="button"
+          (click)="showDeleteModal.set(true)"
+          class="px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 font-medium transition-colors"
+        >
+          Eliminar Semilla
+        </button>
+
+        <!-- El modal solo existe en el DOM cuando showDeleteModal() es true -->
+        @if (showDeleteModal()) {
+          <app-seed-delete-modal
+            title="¿Eliminar semilla?"
+            message="Esta acción no se puede deshacer. El registro se borrará permanentemente de Plantarium."
+            confirmText="Sí, eliminar"
+            [isLoading]="isDeleting()"
+            (confirmAction)="onConfirmDelete()"
+            (cancelAction)="showDeleteModal.set(false)"
+          />
+        }
+      } @else {
+        <div></div>
+      }
+      <div class="flex gap-3">
+        <a
+          routerLink="/seeds"
+          class="px-4 py-2 rounded-lg border border-primary/30 hover:bg-primary/10"
+        >
+          Cancelar
+        </a>
+        <button
+          type="submit"
+          [disabled]="isSubmitting()"
+          class="px-4 py-2 rounded-lg bg-primary text-background font-semibold disabled:opacity-50"
+        >
+          {{ isSubmitting() ? 'Guardando...' : 'Guardar Semilla' }}
+        </button>
+      </div>
+    </div>
+  </form>
+}

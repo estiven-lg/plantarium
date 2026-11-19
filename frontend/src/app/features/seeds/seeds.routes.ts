@@ -4,7 +4,13 @@ export const SEEDS_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/seed-list/seed-list').then(m => m.SeedList),
+      import('./pages/seed-list/seed-list').then((m) => m.SeedList),
     title: 'Seeds',
-  }
+  },
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('./pages/seed-form/seed-form').then((m) => m.SeedForm),
+    title: 'Edit Seed',
+  },
 ];

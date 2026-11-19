@@ -12,6 +12,7 @@ public class PlantsController : ControllerBase
     }
 
     [HttpGet]
+    [Produces("application/json")]
     public async Task<ActionResult<IEnumerable<PlantResponseDto>>> GetAll()
     {
         var plants = await _plantService.GetAllAsync();
@@ -19,6 +20,7 @@ public class PlantsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Produces("application/json")]
     public async Task<ActionResult<PlantResponseDto>> GetById(Guid id)
     {
         var plant = await _plantService.GetByIdAsync(id);
@@ -30,6 +32,7 @@ public class PlantsController : ControllerBase
     }
 
     [HttpPost]
+    [Produces("application/json")]
     public async Task<ActionResult<PlantResponseDto>> Create(CreatePlantDto dto)
     {
         var plant = await _plantService.CreateAsync(dto);
@@ -37,6 +40,7 @@ public class PlantsController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Produces("application/json")]
     public async Task<ActionResult<PlantResponseDto>> Update(Guid id, UpdatePlantDto dto)
     {
         var updatedPlant = await _plantService.UpdateAsync(id, dto);
@@ -49,6 +53,7 @@ public class PlantsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Produces("application/json")]
     public async Task<IActionResult> Delete(Guid id)
     {
         try

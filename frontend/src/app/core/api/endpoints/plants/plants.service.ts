@@ -28,10 +28,8 @@ import type {
   UpdatePlantDto
 } from '../../models';
 
-import {
-  HttpHeaders
-} from '@angular/common/http';
 import type {
+  HttpHeaders,
   HttpResponse as AngularHttpResponse
 } from '@angular/common/http';
 
@@ -78,212 +76,140 @@ type HttpClientObserveOptions = HttpClientOptions & {
 
 
 
-export type GetApiPlantsAccept = typeof GetApiPlantsAccept[keyof typeof GetApiPlantsAccept];
 
-export const GetApiPlantsAccept = {
-  text_plain: 'text/plain',
-  application_json: 'application/json',
-  text_json: 'text/json',
-} as const;
-
-export type PostApiPlantsAccept = typeof PostApiPlantsAccept[keyof typeof PostApiPlantsAccept];
-
-export const PostApiPlantsAccept = {
-  text_plain: 'text/plain',
-  application_json: 'application/json',
-  text_json: 'text/json',
-} as const;
-
-export type GetApiPlantsIdAccept = typeof GetApiPlantsIdAccept[keyof typeof GetApiPlantsIdAccept];
-
-export const GetApiPlantsIdAccept = {
-  text_plain: 'text/plain',
-  application_json: 'application/json',
-  text_json: 'text/json',
-} as const;
-
-export type PutApiPlantsIdAccept = typeof PutApiPlantsIdAccept[keyof typeof PutApiPlantsIdAccept];
-
-export const PutApiPlantsIdAccept = {
-  text_plain: 'text/plain',
-  application_json: 'application/json',
-  text_json: 'text/json',
-} as const;
 
 @Injectable({ providedIn: 'root' })
 export class PlantsService {
   private readonly http = inject(HttpClient);
- getApiPlants(accept: 'text/plain', options?: HttpClientOptions): Observable<string>;
-  getApiPlants(accept: 'application/json', options?: HttpClientOptions): Observable<PlantResponseDto[]>;
-  getApiPlants(accept: 'text/json', options?: HttpClientOptions): Observable<PlantResponseDto[]>;
-  getApiPlants(accept?: GetApiPlantsAccept, options?: HttpClientOptions): Observable<PlantResponseDto[] | string>;
-  getApiPlants(
-    accept: GetApiPlantsAccept = 'application/json',
-    options?: HttpClientOptions
-  ): Observable<PlantResponseDto[] | string> {
-    const headers = options?.headers instanceof HttpHeaders
-      ? options.headers.set('Accept', accept)
-      : { ...(options?.headers ?? {}), Accept: accept };
-
-    if (accept.includes('json') || accept.includes('+json')) {
-      return this.http.get<PlantResponseDto[]>(`/api/Plants`, {
-        ...options,
-        responseType: 'json',
-        headers,
-
-
-      });
-    } else if (accept.startsWith('text/') || accept.includes('xml')) {
-      return this.http.get(`/api/Plants`, {
-        ...options,
-        responseType: 'text',
-        headers,
-
-
-      }) as Observable<string>;
+ getApiPlants<TData = PlantResponseDto[]>( options?: HttpClientBodyOptions): Observable<TData>;
+ getApiPlants<TData = PlantResponseDto[]>( options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
+ getApiPlants<TData = PlantResponseDto[]>( options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  getApiPlants<TData = PlantResponseDto[]>(
+     options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    if (options?.observe === 'events') {
+      return this.http.get<TData>(
+      `/api/Plants`,{
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'events',
+      }
+    );
     }
 
-    return this.http.get<PlantResponseDto[]>(`/api/Plants`, {
-        ...options,
-        responseType: 'json',
-        headers,
-
-
-      });
-  }
- postApiPlants(createPlantDto: CreatePlantDto | undefined,
-    accept: 'text/plain', options?: HttpClientOptions): Observable<string>;
-  postApiPlants(createPlantDto: CreatePlantDto | undefined,
-    accept: 'application/json', options?: HttpClientOptions): Observable<PlantResponseDto>;
-  postApiPlants(createPlantDto: CreatePlantDto | undefined,
-    accept: 'text/json', options?: HttpClientOptions): Observable<PlantResponseDto>;
-  postApiPlants(createPlantDto?: CreatePlantDto,
-    accept?: PostApiPlantsAccept, options?: HttpClientOptions): Observable<PlantResponseDto | string>;
-  postApiPlants(
-    createPlantDto?: CreatePlantDto,
-    accept: PostApiPlantsAccept = 'application/json',
-    options?: HttpClientOptions
-  ): Observable<PlantResponseDto | string> {
-    const headers = options?.headers instanceof HttpHeaders
-      ? options.headers.set('Accept', accept)
-      : { ...(options?.headers ?? {}), Accept: accept };
-
-    if (accept.includes('json') || accept.includes('+json')) {
-      return this.http.post<PlantResponseDto>(`/api/Plants`, createPlantDto, {
-        ...options,
-        responseType: 'json',
-        headers,
-
-
-      });
-    } else if (accept.startsWith('text/') || accept.includes('xml')) {
-      return this.http.post(`/api/Plants`, createPlantDto, {
-        ...options,
-        responseType: 'text',
-        headers,
-
-
-      }) as Observable<string>;
+    if (options?.observe === 'response') {
+      return this.http.get<TData>(
+      `/api/Plants`,{
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'response',
+      }
+    );
     }
 
-    return this.http.post<PlantResponseDto>(`/api/Plants`, createPlantDto, {
-        ...options,
-        responseType: 'json',
-        headers,
-
-
-      });
+    return this.http.get<TData>(
+      `/api/Plants`,{
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'body',
+      }
+    );
   }
- getApiPlantsId(id: string,
-    accept: 'text/plain', options?: HttpClientOptions): Observable<string>;
-  getApiPlantsId(id: string,
-    accept: 'application/json', options?: HttpClientOptions): Observable<PlantResponseDto>;
-  getApiPlantsId(id: string,
-    accept: 'text/json', options?: HttpClientOptions): Observable<PlantResponseDto>;
-  getApiPlantsId(id: string,
-    accept?: GetApiPlantsIdAccept, options?: HttpClientOptions): Observable<PlantResponseDto | string>;
-  getApiPlantsId(
+ postApiPlants<TData = PlantResponseDto>(createPlantDto?: CreatePlantDto, options?: HttpClientBodyOptions): Observable<TData>;
+ postApiPlants<TData = PlantResponseDto>(createPlantDto?: CreatePlantDto, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
+ postApiPlants<TData = PlantResponseDto>(createPlantDto?: CreatePlantDto, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  postApiPlants<TData = PlantResponseDto>(
+    createPlantDto?: CreatePlantDto, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    if (options?.observe === 'events') {
+      return this.http.post<TData>(
+      `/api/Plants`,
+      createPlantDto,{
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'events',
+      }
+    );
+    }
+
+    if (options?.observe === 'response') {
+      return this.http.post<TData>(
+      `/api/Plants`,
+      createPlantDto,{
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'response',
+      }
+    );
+    }
+
+    return this.http.post<TData>(
+      `/api/Plants`,
+      createPlantDto,{
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'body',
+      }
+    );
+  }
+ getApiPlantsId<TData = PlantResponseDto>(id: string, options?: HttpClientBodyOptions): Observable<TData>;
+ getApiPlantsId<TData = PlantResponseDto>(id: string, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
+ getApiPlantsId<TData = PlantResponseDto>(id: string, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  getApiPlantsId<TData = PlantResponseDto>(
+    id: string, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    if (options?.observe === 'events') {
+      return this.http.get<TData>(
+      `/api/Plants/${id}`,{
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'events',
+      }
+    );
+    }
+
+    if (options?.observe === 'response') {
+      return this.http.get<TData>(
+      `/api/Plants/${id}`,{
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'response',
+      }
+    );
+    }
+
+    return this.http.get<TData>(
+      `/api/Plants/${id}`,{
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'body',
+      }
+    );
+  }
+ putApiPlantsId<TData = PlantResponseDto>(id: string,
+    updatePlantDto?: UpdatePlantDto, options?: HttpClientBodyOptions): Observable<TData>;
+ putApiPlantsId<TData = PlantResponseDto>(id: string,
+    updatePlantDto?: UpdatePlantDto, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
+ putApiPlantsId<TData = PlantResponseDto>(id: string,
+    updatePlantDto?: UpdatePlantDto, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  putApiPlantsId<TData = PlantResponseDto>(
     id: string,
-    accept: GetApiPlantsIdAccept = 'application/json',
-    options?: HttpClientOptions
-  ): Observable<PlantResponseDto | string> {
-    const headers = options?.headers instanceof HttpHeaders
-      ? options.headers.set('Accept', accept)
-      : { ...(options?.headers ?? {}), Accept: accept };
-
-    if (accept.includes('json') || accept.includes('+json')) {
-      return this.http.get<PlantResponseDto>(`/api/Plants/${id}`, {
-        ...options,
-        responseType: 'json',
-        headers,
-
-
-      });
-    } else if (accept.startsWith('text/') || accept.includes('xml')) {
-      return this.http.get(`/api/Plants/${id}`, {
-        ...options,
-        responseType: 'text',
-        headers,
-
-
-      }) as Observable<string>;
+    updatePlantDto?: UpdatePlantDto, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    if (options?.observe === 'events') {
+      return this.http.put<TData>(
+      `/api/Plants/${id}`,
+      updatePlantDto,{
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'events',
+      }
+    );
     }
 
-    return this.http.get<PlantResponseDto>(`/api/Plants/${id}`, {
-        ...options,
-        responseType: 'json',
-        headers,
-
-
-      });
-  }
- putApiPlantsId(id: string,
-    updatePlantDto: UpdatePlantDto | undefined,
-    accept: 'text/plain', options?: HttpClientOptions): Observable<string>;
-  putApiPlantsId(id: string,
-    updatePlantDto: UpdatePlantDto | undefined,
-    accept: 'application/json', options?: HttpClientOptions): Observable<PlantResponseDto>;
-  putApiPlantsId(id: string,
-    updatePlantDto: UpdatePlantDto | undefined,
-    accept: 'text/json', options?: HttpClientOptions): Observable<PlantResponseDto>;
-  putApiPlantsId(id: string,
-    updatePlantDto?: UpdatePlantDto,
-    accept?: PutApiPlantsIdAccept, options?: HttpClientOptions): Observable<PlantResponseDto | string>;
-  putApiPlantsId(
-    id: string,
-    updatePlantDto?: UpdatePlantDto,
-    accept: PutApiPlantsIdAccept = 'application/json',
-    options?: HttpClientOptions
-  ): Observable<PlantResponseDto | string> {
-    const headers = options?.headers instanceof HttpHeaders
-      ? options.headers.set('Accept', accept)
-      : { ...(options?.headers ?? {}), Accept: accept };
-
-    if (accept.includes('json') || accept.includes('+json')) {
-      return this.http.put<PlantResponseDto>(`/api/Plants/${id}`, updatePlantDto, {
-        ...options,
-        responseType: 'json',
-        headers,
-
-
-      });
-    } else if (accept.startsWith('text/') || accept.includes('xml')) {
-      return this.http.put(`/api/Plants/${id}`, updatePlantDto, {
-        ...options,
-        responseType: 'text',
-        headers,
-
-
-      }) as Observable<string>;
+    if (options?.observe === 'response') {
+      return this.http.put<TData>(
+      `/api/Plants/${id}`,
+      updatePlantDto,{
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'response',
+      }
+    );
     }
 
-    return this.http.put<PlantResponseDto>(`/api/Plants/${id}`, updatePlantDto, {
-        ...options,
-        responseType: 'json',
-        headers,
-
-
-      });
+    return this.http.put<TData>(
+      `/api/Plants/${id}`,
+      updatePlantDto,{
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'body',
+      }
+    );
   }
  deleteApiPlantsId<TData = void>(id: string, options?: HttpClientBodyOptions): Observable<TData>;
  deleteApiPlantsId<TData = void>(id: string, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
@@ -317,8 +243,8 @@ export class PlantsService {
   }
 };
 
-export type GetApiPlantsClientResult = NonNullable<string | PlantResponseDto[]>
-export type PostApiPlantsClientResult = NonNullable<string | PlantResponseDto>
-export type GetApiPlantsIdClientResult = NonNullable<string | PlantResponseDto>
-export type PutApiPlantsIdClientResult = NonNullable<string | PlantResponseDto>
+export type GetApiPlantsClientResult = NonNullable<PlantResponseDto[]>
+export type PostApiPlantsClientResult = NonNullable<PlantResponseDto>
+export type GetApiPlantsIdClientResult = NonNullable<PlantResponseDto>
+export type PutApiPlantsIdClientResult = NonNullable<PlantResponseDto>
 export type DeleteApiPlantsIdClientResult = NonNullable<void>

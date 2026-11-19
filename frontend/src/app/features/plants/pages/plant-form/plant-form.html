@@ -1,0 +1,130 @@
+@if (isLoading()) {
+  <app-plant-form-skeleton />
+} @else {
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    class="w-full h-full flex flex-col space-y-5 bg-surface p-6 rounded-xl border border-primary/20"
+  >
+    <div class="flex items-center justify-between gap-3">
+      <a
+        routerLink="/plants"
+        aria-label="Regresar al menú principal"
+        class="p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
+      >
+        <lucide-icon [img]="arrowLeftIcon" class="w-5 h-5"></lucide-icon>
+      </a>
+      <div class="flex items-center gap-2">
+        <h2 class="text-xl font-bold text-primary">
+          {{ id() === 'new' ? 'Nueva Planta' : 'Editar Planta' }}
+        </h2>
+        <lucide-icon [img]="plantsIcon" class="w-6 h-6 text-primary/50" />
+      </div>
+    </div>
+
+    <!-- name -->
+    <div class="space-y-1">
+      <label for="name" class="block text-sm font-medium">Nombre común *</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder="Ej. Monstera Deliciosa"
+        class="w-full px-3 py-2 rounded-lg bg-background border border-primary/30 focus:outline-none focus:border-primary"
+      />
+
+      <!-- Mensajes de validación reactivos -->
+      @if (form.controls.name.invalid && form.controls.name.touched) {
+        <p class="text-xs text-red-500">
+          @if (form.controls.name.hasError('required')) {
+            El nombre es obligatorio.
+          } @else if (form.controls.name.hasError('minlength')) {
+            Debe tener al menos 3 caracteres.
+          }
+        </p>
+      }
+    </div>
+
+    <!-- scientificName -->
+    <div class="space-y-1">
+      <label for="scientificName" class="block text-sm font-medium">Nombre científico *</label>
+      <input
+        id="scientificName"
+        type="text"
+        formControlName="scientificName"
+        placeholder="Ej. Monstera deliciosa"
+        class="w-full px-3 py-2 rounded-lg bg-background border border-primary/30 focus:outline-none focus:border-primary"
+      />
+
+      <!-- Mensajes de validación reactivos -->
+      @if (form.controls.scientificName.invalid && form.controls.scientificName.touched) {
+        <p class="text-xs text-red-500">
+          @if (form.controls.scientificName.hasError('required')) {
+            El nombre científico es obligatorio.
+          }
+        </p>
+      }
+    </div>
+
+    <!-- description -->
+    <div class="space-y-1">
+      <label for="description" class="block text-sm font-medium">Descripción</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        placeholder="Ej. Planta de interior con hojas grandes y hermosas."
+        class="w-full px-3 py-2 rounded-lg bg-background border border-primary/30 focus:outline-none focus:border-primary line-clamp-5"
+      ></textarea>
+    </div>
+
+    <!-- price -->
+    <div class="space-y-1">
+      <label for="price" class="block text-sm font-medium">Precio *</label>
+      <input
+        id="price"
+        type="number"
+        formControlName="price"
+        placeholder="Ej. 19.99"
+        class="w-full px-3 py-2 rounded-lg bg-background border border-primary/30 focus:outline-none focus:border-primary"
+      />
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="flex justify-between gap-3 pt-4 mt-auto">
+      <button
+        type="button"
+        (click)="showDeleteModal.set(true)"
+        class="px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 font-medium transition-colors"
+      >
+        Eliminar Planta
+      </button>
+
+      <!-- El modal solo existe en el DOM cuando showDeleteModal() es true -->
+      @if (showDeleteModal()) {
+        <app-plant-delete-modal
+          title="¿Eliminar planta?"
+          message="Esta acción no se puede deshacer. El registro se borrará permanentemente de Plantarium."
+          confirmText="Sí, eliminar"
+          [isLoading]="isDeleting()"
+          (confirmAction)="onConfirmDelete()"
+          (cancelAction)="showDeleteModal.set(false)"
+        />
+      }
+      <div class="flex gap-3">
+        <a
+          routerLink="/plants"
+          class="px-4 py-2 rounded-lg border border-primary/30 hover:bg-primary/10"
+        >
+          Cancelar
+        </a>
+        <button
+          type="submit"
+          [disabled]="isSubmitting()"
+          class="px-4 py-2 rounded-lg bg-primary text-background font-semibold disabled:opacity-50"
+        >
+          {{ isSubmitting() ? 'Guardando...' : 'Guardar Planta' }}
+        </button>
+      </div>
+    </div>
+  </form>
+}

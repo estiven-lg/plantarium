@@ -5,6 +5,7 @@ import { ArrowLeft, LucideAngularModule, Sprout } from 'lucide-angular';
 import { PlantsService } from '@features/plants/services/plants.service';
 import { PlantFormSkeleton } from '@features/plants/components/plant-form-skeleton/plant-form-skeleton';
 import { PlantDeleteModal } from '@features/plants/components/plant-delete-modal/plant-delete-modal';
+import { ToastService } from '@core/services/toast.service';
 
 @Component({
   selector: 'app-plant-form',
@@ -24,7 +25,7 @@ export class PlantForm implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly plantsService = inject(PlantsService);
   private readonly router = inject(Router);
-  
+  private readonly toast = inject(ToastService);
 
   showDeleteModal = signal<boolean>(false);
   isDeleting = signal<boolean>(false);
@@ -88,8 +89,14 @@ export class PlantForm implements OnInit {
     }
 
     request$.subscribe({
-      next: () => this.router.navigate(['/plants']),
-      error: () => this.isSubmitting.set(false),
+      next: () => {
+        this.router.navigate(['/plants']);
+        this.toast.success('Planta guardada exitosamente');
+      },
+      error: () => {
+        this.isSubmitting.set(false);
+        this.toast.error('Error al guardar la planta. Por favor, inténtalo de nuevo.');
+      },
     });
   }
 
@@ -103,11 +110,13 @@ export class PlantForm implements OnInit {
       next: () => {
         this.isDeleting.set(false);
         this.showDeleteModal.set(false);
+        this.toast.success('Planta eliminada exitosamente');
         this.router.navigate(['/plants']);
       },
       error: () => {
         this.isDeleting.set(false);
         this.showDeleteModal.set(false);
+        this.toast.error('Error al eliminar la planta. Por favor, inténtalo de nuevo.');
       },
     });
   }

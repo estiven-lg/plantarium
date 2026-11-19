@@ -5,6 +5,7 @@ import { ArrowLeft, Citrus, LucideAngularModule } from 'lucide-angular';
 import { FruitsService } from '@features/fruits/services/fruits.service';
 import { FruitFormSkeleton } from '@features/fruits/components/fruit-form-skeleton/fruit-form-skeleton';
 import { FruitDeleteModal } from '@features/fruits/components/fruit-delete-modal/fruit-delete-modal';
+import { ToastService } from '@core/services/toast.service';
 
 @Component({
   selector: 'app-fruit-form',
@@ -24,6 +25,7 @@ export class FruitForm implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly fruitsService = inject(FruitsService);
   private readonly router = inject(Router);
+  private readonly toast = inject(ToastService);
 
   showDeleteModal = signal<boolean>(false);
   isDeleting = signal<boolean>(false);
@@ -96,8 +98,14 @@ export class FruitForm implements OnInit {
     }
 
     request$.subscribe({
-      next: () => this.router.navigate(['/fruits']),
-      error: () => this.isSubmitting.set(false),
+      next: () => {
+        this.router.navigate(['/fruits']);
+        this.toast.success('Fruta guardada exitosamente');
+      },
+      error: () => {
+        this.isSubmitting.set(false);
+        this.toast.error('Error al guardar la fruta. Por favor, inténtalo de nuevo.');
+      },
     });
   }
 
@@ -111,11 +119,13 @@ export class FruitForm implements OnInit {
       next: () => {
         this.isDeleting.set(false);
         this.showDeleteModal.set(false);
+        this.toast.success('Fruta eliminada exitosamente');
         this.router.navigate(['/fruits']);
       },
       error: () => {
         this.isDeleting.set(false);
         this.showDeleteModal.set(false);
+        this.toast.error('Error al eliminar la fruta. Por favor, inténtalo de nuevo.');
       },
     });
   }

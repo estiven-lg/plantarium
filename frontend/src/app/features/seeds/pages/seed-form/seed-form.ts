@@ -5,6 +5,7 @@ import { ArrowLeft, Bean, LucideAngularModule } from 'lucide-angular';
 import { SeedsService } from '@features/seeds/services/seeds.service';
 import { SeedFormSkeleton } from '@features/seeds/components/seed-form-skeleton/seed-form-skeleton';
 import { SeedDeleteModal } from '@features/seeds/components/seed-delete-modal/seed-delete-modal';
+import { ToastService } from '@core/services/toast.service';
 
 @Component({
   selector: 'app-seed-form',
@@ -24,6 +25,7 @@ export class SeedForm implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly seedsService = inject(SeedsService);
   private readonly router = inject(Router);
+  private readonly toast = inject(ToastService);
 
   showDeleteModal = signal<boolean>(false);
   isDeleting = signal<boolean>(false);
@@ -82,8 +84,14 @@ export class SeedForm implements OnInit {
     }
 
     request$.subscribe({
-      next: () => this.router.navigate(['/seeds']),
-      error: () => this.isSubmitting.set(false),
+      next: () => {
+        this.router.navigate(['/seeds']);
+        this.toast.success('Semilla guardada exitosamente');
+      },
+      error: () => {
+        this.isSubmitting.set(false);
+        this.toast.error('Error al guardar la semilla. Por favor, inténtalo de nuevo.');
+      },
     });
   }
 
@@ -97,11 +105,13 @@ export class SeedForm implements OnInit {
       next: () => {
         this.isDeleting.set(false);
         this.showDeleteModal.set(false);
+        this.toast.success('Semilla eliminada exitosamente');
         this.router.navigate(['/seeds']);
       },
       error: () => {
         this.isDeleting.set(false);
         this.showDeleteModal.set(false);
+        this.toast.error('Error al eliminar la semilla. Por favor, inténtalo de nuevo.');
       },
     });
   }

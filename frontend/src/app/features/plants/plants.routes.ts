@@ -6,5 +6,11 @@ export const PLANTS_ROUTES: Routes = [
     loadComponent: () =>
       import('./pages/plant-list/plant-list').then(m => m.PlantList),
     title: 'Plants',
+  },
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('./pages/plant-form/plant-form').then(m => m.PlantForm),
+    title: 'Edit Plant',
   }
 ];

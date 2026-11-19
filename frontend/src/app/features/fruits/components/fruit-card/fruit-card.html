@@ -1,0 +1,11 @@
+<article
+  class="p-4 rounded-xl h-24 bg-surface border border-primary/20 hover:border-primary/50 transition-colors"
+>
+  <a routerLink="/fruits/{{ fruit().id }}" class="h-full w-full flex items-center gap-4">
+    <lucide-icon [img]="fruitIcon" class="w-fit h-full text-primary mb-2"></lucide-icon>
+    <div>
+      <h3 class="font-bold text-lg text-primary">{{ fruit().name }}</h3>
+      <p class="text-xs opacity-75 line-clamp-3">{{ fruit().description }}</p>
+    </div>
+  </a>
+</article>

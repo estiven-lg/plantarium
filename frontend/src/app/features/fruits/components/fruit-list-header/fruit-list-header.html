@@ -1,0 +1,14 @@
+<header class="flex justify-between items-center pb-4">
+  <div>
+    <h2 class="text-2xl font-bold text-primary">Mis Frutas</h2>
+    <p class="text-sm opacity-75">Inventario registrado en Plantarium</p>
+  </div>
+
+  <a
+    routerLink="/fruits/new"
+    aria-label="Registrar nueva fruta"
+    class="bg-primary text-white rounded-full hover:bg-primary/80 transition-colors p-2 flex items-center justify-center"
+  >
+    <lucide-icon [img]="plusIcon" />
+  </a>
+</header>

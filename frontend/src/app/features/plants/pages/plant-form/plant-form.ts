@@ -43,18 +43,24 @@ export class PlantForm implements OnInit {
 
   ngOnInit(): void {
     const plantId = this.id();
-    this.isLoading.set(true);
 
-    // if there is a plantId, we are in edit mode, so we fetch the plant data and populate the form
-    if (plantId) {
-      this.plantsService.getById(plantId).subscribe((plant) => {
-        this.form.patchValue({
-          name: plant.name ?? '',
-          scientificName: plant.scientificName ?? '',
-          description: plant.description ?? '',
-          price: plant.price ?? 0,
-        });
-        this.isLoading.set(false);
+    // if plantId is not 'new', we are in edit mode, so we fetch the plant data and populate the form
+    if (plantId && plantId !== 'new') {
+      this.isLoading.set(true);
+      this.plantsService.getById(plantId).subscribe({
+        next: (plant) => {
+          this.form.patchValue({
+            name: plant.name ?? '',
+            scientificName: plant.scientificName ?? '',
+            description: plant.description ?? '',
+            price: plant.price ?? 0,
+          });
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Error al cargar la planta:', err);
+          this.isLoading.set(false);
+        },
       });
     }
   }

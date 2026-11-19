@@ -4,9 +4,11 @@
     <p class="text-sm opacity-75">Inventario registrado en Plantarium</p>
   </div>
 
-  <button class="bg-primary text-white rounded-full hover:bg-primary/80 transition-colors p-2">
-    <a routerLink="/plants/new" class="flex items-center gap-2">
-      <lucide-icon [img]="plusIcon" />
-    </a>
-  </button>
+  <a
+    routerLink="/plants/new"
+    aria-label="Registrar nueva planta"
+    class="bg-primary text-white rounded-full hover:bg-primary/80 transition-colors p-2 flex items-center justify-center"
+  >
+    <lucide-icon [img]="plusIcon" />
+  </a>
 </header>

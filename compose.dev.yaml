@@ -1,0 +1,54 @@
+services:
+  postgres:
+    container_name: plantarium_postgres_dev
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - plantarium_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    container_name: plantarium_backend_dev
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile.dev
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app/backend
+      - /app/backend/src/Plantarium.Api/bin
+      - /app/backend/src/Plantarium.Api/obj
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__PlantariumDatabase: Host=${DB_HOST};Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
+  
+  frontend:
+    container_name: plantarium_frontend_dev
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile.dev
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+volumes:
+  plantarium_data:

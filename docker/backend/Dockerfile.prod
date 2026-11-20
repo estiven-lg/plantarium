@@ -1,0 +1,43 @@
+# --- Build y Publish ---
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+
+# copy csproj and restore as distinct layers
+RUN dotnet tool install --global dotnet-ef --version "10.0.*"
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+COPY backend/Plantarium.slnx ./backend/
+COPY backend/src/Plantarium.Api/Plantarium.Api.csproj ./backend/src/Plantarium.Api/
+COPY backend/src/Modules/Seeds/Plantarium.Modules.Seeds.csproj ./backend/src/Modules/Seeds/
+COPY backend/src/Modules/Fruits/Plantarium.Modules.Fruits.csproj ./backend/src/Modules/Fruits/
+COPY backend/src/Modules/Plants/Plantarium.Modules.Plants.csproj ./backend/src/Modules/Plants/
+
+RUN dotnet restore backend/Plantarium.slnx
+
+# copy everything else and build
+COPY backend/ ./backend/
+RUN dotnet publish backend/src/Plantarium.Api/Plantarium.Api.csproj \
+    -c Release \
+    -o /app/publish \
+    --no-restore
+
+# --- Migrations Bundles --- 
+RUN dotnet ef migrations bundle --project backend/src/Modules/Seeds/Plantarium.Modules.Seeds.csproj --startup-project backend/src/Plantarium.Api/Plantarium.Api.csproj --context SeedDbContext --configuration Release --self-contained -r linux-x64 -o /app/migrations/migrate-seeds
+RUN dotnet ef migrations bundle --project backend/src/Modules/Fruits/Plantarium.Modules.Fruits.csproj --startup-project backend/src/Plantarium.Api/Plantarium.Api.csproj --context FruitDbContext --configuration Release --self-contained -r linux-x64 -o /app/migrations/migrate-fruits
+RUN dotnet ef migrations bundle --project backend/src/Modules/Plants/Plantarium.Modules.Plants.csproj --startup-project backend/src/Plantarium.Api/Plantarium.Api.csproj --context PlantDbContext --configuration Release --self-contained -r linux-x64 -o /app/migrations/migrate-plants
+# --- Runtime final ---1
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+WORKDIR /app
+
+# copy the published output from the build stage to the runtime stage
+COPY --from=build --chown=$APP_UID:$APP_UID /app/publish .
+COPY --from=build --chown=$APP_UID:$APP_UID /app/migrations ./migrations
+
+USER $APP_UID
+
+
+ENV ASPNETCORE_ENVIRONMENT=Production \
+    ASPNETCORE_URLS=http://+:8080
+
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "Plantarium.Api.dll"]

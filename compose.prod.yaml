@@ -1,0 +1,43 @@
+services:
+  postgres:
+    container_name: plantarium_postgres
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - plantarium_prod_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    container_name: plantarium_backend
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile.prod
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__PlantariumDatabase: Host=postgres;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
+
+  frontend:
+    container_name: plantarium_frontend
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile.prod
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  plantarium_prod_data:

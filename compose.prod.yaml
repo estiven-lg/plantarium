@@ -17,9 +17,7 @@ services:
 
   backend:
     container_name: plantarium_backend
-    build:
-      context: .
-      dockerfile: docker/backend/Dockerfile.prod
+    image: ghcr.io/${GITHUB_USER}/plantarium-backend:latest
     restart: always
     depends_on:
       postgres:
@@ -30,9 +28,7 @@ services:
 
   frontend:
     container_name: plantarium_frontend
-    build:
-      context: .
-      dockerfile: docker/frontend/Dockerfile.prod
+    image: ghcr.io/${GITHUB_USER}/plantarium-frontend:latest
     restart: always
     ports:
       - "80:80"

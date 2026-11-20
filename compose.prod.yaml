@@ -31,7 +31,7 @@ services:
     image: ghcr.io/${GITHUB_USER}/plantarium-frontend:latest
     restart: always
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - backend
 

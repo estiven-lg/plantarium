@@ -59,9 +59,9 @@ jobs:
             docker compose -f compose.prod.yaml pull
             docker compose -f compose.prod.yaml up -d postgres
             sleep 5
-            docker compose -f compose.prod.yaml run --rm backend sh -c "\
-              ./migrations/migrate-seeds --connection \"\$ConnectionStrings__PlantariumDatabase\" && \
-              ./migrations/migrate-fruits --connection \"\$ConnectionStrings__PlantariumDatabase\" && \
-              ./migrations/migrate-plants --connection \"\$ConnectionStrings__PlantariumDatabase\""
+            docker compose -f compose.prod.yaml run --rm --entrypoint "" backend sh -c "\
+                ./migrations/migrate-seeds --connection \"\$ConnectionStrings__PlantariumDatabase\" && \
+                ./migrations/migrate-fruits --connection \"\$ConnectionStrings__PlantariumDatabase\" && \
+                ./migrations/migrate-plants --connection \"\$ConnectionStrings__PlantariumDatabase\""
             docker compose -f compose.prod.yaml up -d --remove-orphans
             docker image prune -f

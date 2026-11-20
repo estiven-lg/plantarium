@@ -1,0 +1,31 @@
+# Control de versiones y documentación
+.git
+.gitignore
+.github
+README.md
+Makefile
+
+# Variables de entorno y secretos locales
+.env
+.env.*
+*.user
+*.suo
+
+# Artefactos y dependencias de Node / Angular
+**/node_modules
+frontend/dist
+frontend/.angular
+frontend/coverage
+npm-debug.log*
+
+# Artefactos de compilación de .NET (Plantarium.Api y módulos Seeds, Fruits, Plants)
+**/bin
+**/obj
+.vs
+.vscode
+.idea
+
+# Archivos de Docker (no necesarios dentro de las imágenes)
+compose*.yaml
+docker/**/Dockerfile*
+.dockerignore

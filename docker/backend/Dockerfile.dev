@@ -1,0 +1,32 @@
+FROM mcr.microsoft.com/dotnet/sdk:10.0
+
+WORKDIR /app
+
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+# Copy the solution and project files to restore dependencies
+COPY backend/Plantarium.slnx ./backend/
+COPY backend/src/Plantarium.Api/Plantarium.Api.csproj ./backend/src/Plantarium.Api/
+COPY backend/src/Modules/Seeds/Plantarium.Modules.Seeds.csproj ./backend/src/Modules/Seeds/
+COPY backend/src/Modules/Fruits/Plantarium.Modules.Fruits.csproj ./backend/src/Modules/Fruits/
+COPY backend/src/Modules/Plants/Plantarium.Modules.Plants.csproj ./backend/src/Modules/Plants/
+
+# Restore dependencies for the solution
+RUN dotnet restore backend/Plantarium.slnx
+
+#  Copy the rest of the backend source code
+COPY backend/ ./backend/
+
+
+EXPOSE 8080
+
+# Configurar entorno para evitar problemas con file watchers en contenedores Linux
+ENV ASPNETCORE_ENVIRONMENT=Development \
+    ASPNETCORE_URLS=http://+:8080 \
+    DOTNET_USE_POLLING_FILE_WATCHER=true \
+    DOTNET_WATCH_RESTART_ON_RUDE_EDIT=true
+
+# Ejecutar con hot-reload apuntando al proyecto API principal
+WORKDIR /app/backend/src/Plantarium.Api
+CMD ["dotnet", "watch", "run", "--no-launch-profile"]

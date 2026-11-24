@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { BreakpointService } from '@core/services/breakpoint.service';
 
 @Component({
   selector: 'app-footer',
@@ -6,4 +7,8 @@ import { Component } from '@angular/core';
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css',
 })
-export class FooterComponent {}
+export class FooterComponent {
+   private breakpointService = inject(BreakpointService);
+
+   isMobile = this.breakpointService.isMobile;
+}

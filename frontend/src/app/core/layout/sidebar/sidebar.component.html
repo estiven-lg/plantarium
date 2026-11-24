@@ -1,32 +1,61 @@
-<aside class="w-64 border-r border-primary/10 flex flex-col shrink-0 h-full">
-  <nav class="p-4 flex-1 space-y-1.5">
-    <a
-      routerLink="/fruits"
-      routerLinkActive="bg-primary/10"
-      class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-primary hover:bg-background transition font-medium"
-    >
-      <lucide-icon [img]="fruitsIcon" class="w-5 h-5 text-primary"></lucide-icon>
-      <span>Frutas</span>
-    </a>
-    <a
-      routerLink="/seeds"
-      routerLinkActive="bg-primary/10"
-      class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium transition"
-    >
-      <lucide-icon [img]="seedsIcon" class="w-5 h-5 text-primary"></lucide-icon>
-      <span>Semillas</span>
-    </a>
-    <a
-      routerLink="/plants"
-      routerLinkActive="bg-primary/10"
-      class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-primary hover:bg-background transition font-medium"
-    >
-      <lucide-icon [img]="plantsIcon" class="w-5 h-5 text-primary"></lucide-icon>
-      <span>Plantas</span>
-    </a>
-  </nav>
+<div class="min-w-18 h-full">
+  @if (isMobile() && !isCollapsed()) {
+    <div
+      (click)="isCollapsed.set(true)"
+      (keydown.enter)="isCollapsed.set(true)"
+      (keydown.space)="isCollapsed.set(true)"
+      role="button"
+      tabindex="0"
+      class="fixed inset-0 bg-black/40 z-40"
+    ></div>
+  }
 
-  <div class="bg-accent-light py-4 px-6 border-t border-primary/10 text-sm text-primary">
-    Plantarium v0.1
-  </div>
-</aside>
+  <aside
+    class="fixed bg-background z-40 border-r border-primary/10 flex flex-col shrink-0 h-full select-none bg- transition-all duration-300"
+    [class.w-18]="isCollapsed()"
+    [class.w-64]="!isCollapsed()"
+  >
+    <div class="flex items-center bg-accent-light h-16 border-b border-primary/10 gap-3 px-4">
+      <lucide-icon [img]="SunIcon" class="w-12 h-12 text-primary" (click)="toggleSidebar()" />
+      @if (!isCollapsed()) {
+        <span class="text-xl font-bold text-primary tracking-tight">Plantarium</span>
+      }
+    </div>
+    <nav class="p-4 flex-1 space-y-1.5">
+      <a
+        routerLink="/fruits"
+        routerLinkActive="bg-primary/10"
+        class="flex items-center h-10 gap-3 px-3 py-2.5 rounded-lg text-primary hover:bg-background transition font-medium"
+      >
+        <lucide-icon [img]="fruitsIcon" class="w-5 h-5 text-primary"></lucide-icon>
+        @if (!isCollapsed()) {
+          <span>Frutas</span>
+        }
+      </a>
+      <a
+        routerLink="/seeds"
+        routerLinkActive="bg-primary/10"
+        class="flex items-center h-10 gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium transition"
+      >
+        <lucide-icon [img]="seedsIcon" class="w-5 h-5 text-primary"></lucide-icon>
+        @if (!isCollapsed()) {
+          <span>Semillas</span>
+        }
+      </a>
+      <a
+        routerLink="/plants"
+        routerLinkActive="bg-primary/10"
+        class="flex items-center h-10 gap-3 px-3 py-2.5 rounded-lg text-primary hover:bg-background transition font-medium"
+      >
+        <lucide-icon [img]="plantsIcon" class="w-5 h-5 text-primary"></lucide-icon>
+        @if (!isCollapsed()) {
+          <span>Plantas</span>
+        }
+      </a>
+    </nav>
+
+    <div class="h-12 bg-accent-light py-4 px-6 border-t border-primary/10 text-sm text-primary">
+ 
+    </div>
+  </aside>
+</div>

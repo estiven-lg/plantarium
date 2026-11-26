@@ -11,7 +11,8 @@
   }
 
   <aside
-    class="fixed bg-background z-40 border-r border-primary/10 flex flex-col shrink-0 h-full select-none bg- transition-all duration-300"
+    class=" bg-background z-40 border-r border-primary/10 flex flex-col shrink-0 h-full select-none bg- transition-all duration-300"
+    [class.fixed]="isMobile()"
     [class.w-18]="isCollapsed()"
     [class.w-64]="!isCollapsed()"
   >

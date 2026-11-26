@@ -17,11 +17,22 @@ help: ## Muestra esta ayuda
 up-dev: ## Levanta todo el entorno en segundo plano
 	$(COMPOSE_DEV) up -d
 
+up-local: ## Levanta solo el backend y la base de datos en modo local (sin contenedores)
+	cd backend/src/Plantarium.Api && \
+	ASPNETCORE_ENVIRONMENT=Development \
+	ASPNETCORE_URLS=http://localhost:8080 \
+	DOTNET_USE_POLLING_FILE_WATCHER=true \
+	DOTNET_WATCH_RESTART_ON_RUDE_EDIT=true \
+	dotnet watch run --no-launch-profile
+
 up-dev-back: ## Levanta solo el backend y la base de datos
 	$(COMPOSE_DEV) up -d backend
 
 up-dev-front: ## Levanta solo el frontend y la base de datos
 	$(COMPOSE_DEV) up -d frontend
+
+up-dev-db: ## Levanta solo la base de datos
+	$(COMPOSE_DEV) up -d postgres
 
 down-dev: ## Detiene los contenedores conservando los datos
 	$(COMPOSE_DEV) down
@@ -41,6 +52,12 @@ db-update-dev: ## Aplica las migraciones de todos los módulos (Seeds, Fruits, P
 		dotnet ef database update --project $(SEEDS_PROJ) --startup-project $(STARTUP_PROJ) --context SeedDbContext && \
 		dotnet ef database update --project $(FRUITS_PROJ) --startup-project $(STARTUP_PROJ) --context FruitDbContext && \
 		dotnet ef database update --project $(PLANTS_PROJ) --startup-project $(STARTUP_PROJ) --context PlantDbContext"
+
+db-update-local:
+	cd backend && \
+	dotnet ef database update --project $(SEEDS_PROJ) --startup-project $(STARTUP_PROJ) --context SeedDbContext && \
+	dotnet ef database update --project $(FRUITS_PROJ) --startup-project $(STARTUP_PROJ) --context FruitDbContext && \
+	dotnet ef database update --project $(PLANTS_PROJ) --startup-project $(STARTUP_PROJ) --context Plant
 
 migrate-seeds-dev: ## Crea una nueva migración en Seeds (Uso: make migrate-seeds name=Nombre)
 	$(COMPOSE_DEV) exec -w $(BACKEND_DIR) backend dotnet ef migrations add $(name) --project $(SEEDS_PROJ) --startup-project $(STARTUP_PROJ) --context SeedDbContext

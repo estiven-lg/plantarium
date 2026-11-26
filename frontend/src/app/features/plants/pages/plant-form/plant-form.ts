@@ -1,11 +1,12 @@
 import { Component, OnInit, inject, input, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { ArrowLeft, LucideAngularModule, Sprout } from 'lucide-angular';
+import { ArrowLeft, LucideAngularModule, Save, Sprout, Trash } from 'lucide-angular';
 import { PlantsService } from '@features/plants/services/plants.service';
 import { PlantFormSkeleton } from '@features/plants/components/plant-form-skeleton/plant-form-skeleton';
 import { PlantDeleteModal } from '@features/plants/components/plant-delete-modal/plant-delete-modal';
 import { ToastService } from '@core/services/toast.service';
+import { BreakpointService } from '@core/services/breakpoint.service';
 
 @Component({
   selector: 'app-plant-form',
@@ -22,11 +23,15 @@ import { ToastService } from '@core/services/toast.service';
 export class PlantForm implements OnInit {
   readonly arrowLeftIcon = ArrowLeft;
   readonly plantsIcon = Sprout;
+  readonly deleteIcon = Trash;
+  readonly saveIcon = Save;
+  private readonly breakpointService = inject(BreakpointService);
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly plantsService = inject(PlantsService);
   private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
 
+  isMobile = this.breakpointService.isMobile;
   showDeleteModal = signal<boolean>(false);
   isDeleting = signal<boolean>(false);
 

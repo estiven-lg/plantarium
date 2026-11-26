@@ -101,14 +101,17 @@
     </div>
 
     <!-- Botones de acción -->
-    <div class="flex justify-between items-center gap-3 pt-4 mt-auto">
+    <div class="flex justify-end items-center gap-3 pt-4 mt-auto">
       @if (id() !== 'new') {
         <button
           type="button"
           (click)="showDeleteModal.set(true)"
-          class="px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 font-medium transition-colors"
+          class="flex items-center gap-3 px-4 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors disabled:opacity-50"
         >
-          Eliminar Planta
+          <lucide-icon [img]="deleteIcon" class="w-4 h-4" />
+          @if (!isMobile()) {
+            Eliminar Planta
+          }
         </button>
 
         <!-- El modal solo existe en el DOM cuando showDeleteModal() es true -->
@@ -122,22 +125,17 @@
             (cancelAction)="showDeleteModal.set(false)"
           />
         }
-      } @else {
-        <div></div>
       }
       <div class="flex gap-3">
-        <a
-          routerLink="/plants"
-          class="px-4 py-2 rounded-lg border border-primary/30 hover:bg-primary/10"
-        >
-          Cancelar
-        </a>
         <button
           type="submit"
           [disabled]="isSubmitting()"
-          class="px-4 py-2 rounded-lg bg-primary text-background font-semibold disabled:opacity-50"
+          class="flex items-center gap-3 px-4 py-2 rounded-lg bg-primary text-background font-semibold disabled:opacity-50"
         >
-          {{ isSubmitting() ? 'Guardando...' : 'Guardar Planta' }}
+          <lucide-icon [img]="saveIcon" class="w-4 h-4" />
+          @if (!isMobile()) {
+            Guardar Planta
+          }
         </button>
       </div>
     </div>

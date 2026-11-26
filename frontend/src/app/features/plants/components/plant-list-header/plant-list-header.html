@@ -7,7 +7,8 @@
   <a
     routerLink="/plants/new"
     aria-label="Registrar nueva planta"
-    class="bg-primary text-white rounded-full hover:bg-primary/80 transition-colors p-2 flex items-center justify-center"
+    class="right-10 bottom-20 bg-primary text-white rounded-full hover:bg-primary/80 transition-colors p-2 flex items-center justify-center"
+    [class.absolute]="isMobile()"
   >
     <lucide-icon [img]="plusIcon" />
   </a>

@@ -6,6 +6,7 @@ FRUITS_PROJ = src/Modules/Fruits/Plantarium.Modules.Fruits.csproj
 PLANTS_PROJ = src/Modules/Plants/Plantarium.Modules.Plants.csproj
 COMPOSE_DEV = docker compose -f compose.dev.yaml
 COMPOSE_PROD = docker compose -f compose.prod.yaml
+COMPOSE_STAGE = docker compose -f compose.stage.yaml
 
 .PHONY: help up-dev up-dev-back down-dev reset-dev logs-dev db-update-dev migrate-seeds-dev migrate-fruits-dev migrate-plants-dev
 
@@ -92,3 +93,16 @@ db-update-prod: ## Ejecuta los bundles de migración en el contenedor de producc
 		./migrations/migrate-seeds --connection \"\$$ConnectionStrings__PlantariumDatabase\" && \
 		./migrations/migrate-fruits --connection \"\$$ConnectionStrings__PlantariumDatabase\" && \
 		./migrations/migrate-plants --connection \"\$$ConnectionStrings__PlantariumDatabase\""
+
+
+up-stage: ## Levanta todo el entorno en segundo plano (staging)
+	$(COMPOSE_STAGE) up -d
+
+down-stage: ## Detiene los contenedores conservando los datos (staging)
+	$(COMPOSE_STAGE) down
+
+reset-stage: ## Borra contenedores y volúmenes (reinicio limpio desde cero) (staging)
+	$(COMPOSE_STAGE) down -v
+
+build-stage: ## Reconstruye las imágenes de los contenedores (staging)
+	$(COMPOSE_STAGE) build

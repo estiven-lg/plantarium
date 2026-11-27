@@ -1,11 +1,12 @@
 import { Component, OnInit, inject, input, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { ArrowLeft, Bean, LucideAngularModule } from 'lucide-angular';
+import { ArrowLeft, Bean, LucideAngularModule, Save, Trash } from 'lucide-angular';
 import { SeedsService } from '@features/seeds/services/seeds.service';
 import { SeedFormSkeleton } from '@features/seeds/components/seed-form-skeleton/seed-form-skeleton';
 import { SeedDeleteModal } from '@features/seeds/components/seed-delete-modal/seed-delete-modal';
 import { ToastService } from '@core/services/toast.service';
+import { BreakpointService } from '@core/services/breakpoint.service';
 
 @Component({
   selector: 'app-seed-form',
@@ -22,10 +23,15 @@ import { ToastService } from '@core/services/toast.service';
 export class SeedForm implements OnInit {
   readonly arrowLeftIcon = ArrowLeft;
   readonly seedIcon = Bean;
+  readonly deleteIcon = Trash;
+  readonly saveIcon = Save;
+  private readonly breakpointService = inject(BreakpointService);
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly seedsService = inject(SeedsService);
   private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
+
+  isMobile = this.breakpointService.isMobile;
 
   showDeleteModal = signal<boolean>(false);
   isDeleting = signal<boolean>(false);

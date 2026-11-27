@@ -1,11 +1,12 @@
 import { Component, OnInit, inject, input, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { ArrowLeft, Citrus, LucideAngularModule } from 'lucide-angular';
+import { ArrowLeft, Citrus, LucideAngularModule, Save, Trash } from 'lucide-angular';
 import { FruitsService } from '@features/fruits/services/fruits.service';
 import { FruitFormSkeleton } from '@features/fruits/components/fruit-form-skeleton/fruit-form-skeleton';
 import { FruitDeleteModal } from '@features/fruits/components/fruit-delete-modal/fruit-delete-modal';
 import { ToastService } from '@core/services/toast.service';
+import { BreakpointService } from '@core/services/breakpoint.service';
 
 @Component({
   selector: 'app-fruit-form',
@@ -22,10 +23,15 @@ import { ToastService } from '@core/services/toast.service';
 export class FruitForm implements OnInit {
   readonly arrowLeftIcon = ArrowLeft;
   readonly fruitIcon = Citrus;
+  readonly deleteIcon = Trash;
+  readonly saveIcon = Save;
+  private readonly breakpointService = inject(BreakpointService);
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly fruitsService = inject(FruitsService);
   private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
+
+  isMobile = this.breakpointService.isMobile;
 
   showDeleteModal = signal<boolean>(false);
   isDeleting = signal<boolean>(false);

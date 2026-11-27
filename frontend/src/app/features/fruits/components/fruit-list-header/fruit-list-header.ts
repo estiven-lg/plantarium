@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { BreakpointService } from '@core/services/breakpoint.service';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 
 @Component({
@@ -10,4 +11,7 @@ import { LucideAngularModule, Plus } from 'lucide-angular';
 })
 export class FruitListHeader {
   readonly plusIcon = Plus;
+  private readonly breakpointService = inject(BreakpointService);
+
+  isMobile = this.breakpointService.isMobile;
 }
